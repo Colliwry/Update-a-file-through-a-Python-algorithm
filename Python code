@@ -1,0 +1,24 @@
+def update_allow_list(allow_list_file, remove_list_file):
+    try:
+        # Read the current allow list from the file and strip any extra whitespace
+        with open(allow_list_file, 'r') as f:
+            allow_list = set(line.strip() for line in f if line.strip())
+        
+        # Read the remove list from the file and strip any extra whitespace
+        with open(remove_list_file, 'r') as f:
+            remove_list = set(line.strip() for line in f if line.strip())
+        
+        # Remove IPs in the remove list from the allow list
+        updated_allow_list = allow_list - remove_list
+        
+        # Write the updated allow list back to the file, sorted for consistency
+        with open(allow_list_file, 'w') as f:
+            for ip in sorted(updated_allow_list):
+                f.write(ip + '\n')
+        
+        print("Allow list updated successfully.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+# Example usage:
+update_allow_list("allow_list.txt", "remove_list.txt")
